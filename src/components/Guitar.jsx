@@ -1,6 +1,19 @@
-function Guitar({ guitar }) {
-  console.log(guitar);
+function Guitar({ guitar, cart, setCart }) {
   //las props son
+
+  const handleClick = (guitar) => {
+    //añadir al carrito
+
+    const itemExist = cart.findIndex((item) => item.id === guitar.id);
+    if (itemExist < 0) {
+      guitar.quantity = 1;
+      setCart([...cart, guitar]);
+    } else {
+      const updatedCart = [...cart];
+      updatedCart[itemExist].quantity++;
+      setCart(updatedCart);
+    }
+  };
   return (
     <>
       <div className="col-md-6 col-lg-4 my-4 row align-items-center">
@@ -17,7 +30,11 @@ function Guitar({ guitar }) {
           </h3>
           <p>{guitar.description}</p>
           <p className="fw-black text-primary fs-3">${guitar.price}</p>
-          <button type="button" className="btn btn-dark w-100">
+          <button
+            type="button"
+            className="btn btn-dark w-100"
+            onClick={() => handleClick(guitar)}
+          >
             Agregar al Carrito
           </button>
         </div>

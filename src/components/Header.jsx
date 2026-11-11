@@ -1,6 +1,32 @@
-import React from "react";
+function Header({ cart, setCart }) {
+  const deleteFromCart = (guitar) => {
+    const filterGuitars = cart.filter((item) => item.id !== guitar.id); //filtramos las guitarras
+    setCart(filterGuitars);
+  };
+  const incrementQuantity = (guitar) => {
+    const newGuitars = cart.map((g) => {
+      if (guitar.id === g.id) {
+        guitar.quantity++;
+      }
+      return g;
+    });
+    setCart(newGuitars);
+  };
+  const decrementQuantity = (guitar) => {
+    const newGuitars = cart.map((g) => {
+      if (guitar.id === g.id && guitar.quantity >= 2) {
+        guitar.quantity--;
+      }
+      return g;
+    });
+    setCart(newGuitars);
+  };
+  const deleteCart = () => {
+    setCart([]);
+  };
 
-function Header() {
+  const totalAmount = () => {};
+
   return (
     <>
       <header className="py-5 header">
@@ -21,6 +47,7 @@ function Header() {
                   className="img-fluid"
                   src="./img/carrito.png"
                   alt="imagen carrito"
+                  disabled={cart.lenght >= 0}
                 />
 
                 <div id="carrito" className="bg-white p-3">
@@ -36,38 +63,57 @@ function Header() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <img
-                            className="img-fluid"
-                            src="./img/guitarra_02.jpg"
-                            alt="imagen guitarra"
-                          />
-                        </td>
-                        <td>SRV</td>
-                        <td className="fw-bold">$299</td>
-                        <td className="flex align-items-start gap-4">
-                          <button type="button" className="btn btn-dark">
-                            -
-                          </button>
-                          1
-                          <button type="button" className="btn btn-dark">
-                            +
-                          </button>
-                        </td>
-                        <td>
-                          <button className="btn btn-danger" type="button">
-                            X
-                          </button>
-                        </td>
-                      </tr>
+                      {cart.map((guitar) => (
+                        <tr key={guitar.id + Math.random()}>
+                          <td>
+                            <img
+                              className="img-fluid"
+                              src={`/img/${guitar.image}.jpg`}
+                              alt="imagen guitarra"
+                            />
+                          </td>
+                          <td>{guitar.name}</td>
+                          <td className="fw-bold">${guitar.price}</td>
+                          <td className="flex align-items-start gap-4">
+                            <button
+                              type="button"
+                              className="btn btn-dark"
+                              onClick={() => decrementQuantity(guitar)}
+                              disabled={guitar.quantity < 2}
+                            >
+                              -
+                            </button>
+                            {guitar.quantity}
+                            <button
+                              type="button"
+                              className="btn btn-dark"
+                              onClick={() => incrementQuantity(guitar)}
+                              disabled={guitar.quantity === 10}
+                            >
+                              +
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-danger"
+                              type="button"
+                              onClick={() => deleteFromCart(guitar)}
+                            >
+                              X
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
 
                   <p className="text-end">
                     Total pagar: <span className="fw-bold">$899</span>
                   </p>
-                  <button className="btn btn-dark w-100 mt-3 p-2">
+                  <button
+                    className="btn btn-dark w-100 mt-3 p-2"
+                    onClick={() => deleteCart()}
+                  >
                     Vaciar Carrito
                   </button>
                 </div>

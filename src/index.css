@@ -35,6 +35,9 @@
   margin-right: unset;
 }
 
+.carritoDisabled {
+}
+
 #carrito img {
   width: 30px;
 }

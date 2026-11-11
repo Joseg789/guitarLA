@@ -2,11 +2,13 @@ import "./App.css";
 import Header from "./components/Header";
 import Guitar from "./components/Guitar";
 import { db } from "./data/db";
+import { useState } from "react";
 
 function App() {
+  const [cart, setCart] = useState([]);
   return (
     <>
-      <Header />
+      <Header cart={cart} setCart={setCart} />
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
 
@@ -14,7 +16,12 @@ function App() {
           {
             //iterando la data para renderizarla
             db.map((guitar) => (
-              <Guitar guitar={guitar} key={guitar.id} />
+              <Guitar
+                guitar={guitar}
+                key={guitar.id}
+                cart={cart}
+                setCart={setCart}
+              />
             ))
           }
         </div>
